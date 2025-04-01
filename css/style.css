@@ -1,0 +1,441 @@
+/* Réinitialisation de base */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #333;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    background-size: cover;
+}
+
+/* Overlay sombre pour l'arrière-plan dynamique */
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4); /* Overlay légèrement plus sombre */
+    backdrop-filter: blur(5px); /* Effet de flou léger */
+    -webkit-backdrop-filter: blur(5px); /* Compatibilité Safari */
+    z-index: -1;
+}
+/* Header de navigation (header.inc.php) */
+header {
+    background: linear-gradient(to bottom, #ffffff, #e0e7ea); /* Dégradé clair */
+    padding: 15px 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.header-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.site-logo {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+header h1 {
+    font-size: 1.8rem;
+    color: #2c3e50;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #2980b9;
+    font-weight: bold;
+    margin: 0 15px;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #e74c3c;
+}
+
+.theme-toggle-form button {
+    background: #2980b9;
+    border: none;
+    padding: 8px 12px;
+    font-size: 1.2rem;
+    color: #fff;
+    cursor: pointer;
+    border-radius: 20px;
+    transition: background 0.3s;
+}
+
+.theme-toggle-form button:hover {
+    background: #3498db;
+}
+
+/* Bannière de bienvenue (index.php) */
+.welcome-banner {
+    padding: 40px 20px;
+    background: url('../img/arriere_plan_header.jpg') no-repeat center center;
+    background-size: cover;
+    position: relative;
+    text-align: center;
+    color: #fff;
+    margin-top: 0;
+}
+
+.welcome-banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 0;
+}
+
+.welcome-banner h1 {
+    font-size: 2.5rem;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.8);
+    position: relative;
+    z-index: 1;
+}
+
+.welcome-banner p {
+    font-size: 1.2rem;
+    color: #ecf0f1;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+    position: relative;
+    z-index: 1;
+    margin-top: 10px;
+}
+
+/* Main */
+main {
+    max-width: 1000px;
+    margin: 30px auto;
+    padding: 25px;
+    flex: 1;
+    text-align: center;
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+section {
+    margin-bottom: 40px;
+}
+
+h2 {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+section p {
+    font-size: 1.1rem;
+    color: #555;
+    max-width: 700px;
+    margin: 0 auto 20px;
+}
+
+/* Liste des liens */
+.page-links {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.page-links li {
+    background: #2980b9;
+    padding: 12px 20px;
+    border-radius: 8px;
+    transition: transform 0.2s, background 0.3s;
+}
+
+.page-links li:hover {
+    transform: translateY(-3px);
+    background: #3498db;
+}
+
+.page-links li a {
+    color: #fff;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 1.1rem;
+    display: block;
+}
+
+/* Aside */
+aside {
+    text-align: center;
+    margin: 20px 0;
+}
+
+aside img {
+    max-width: 75%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+figcaption {
+    font-style: italic;
+    color: #7f8c8d;
+    margin-top: 8px;
+    font-size: 0.9rem;
+}
+
+/* Footer (mode jour) */
+footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 40px;
+    background: linear-gradient(135deg, #ecf0f1 0%, #dfe4ea 100%);
+    border-top: 2px solid #bdc3c7;
+    font-size: 0.95rem;
+    color: #2c3e50;
+    box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+    font-family: 'Arial', sans-serif;
+    position: relative; /* Pour positionner le bouton retour en haut */
+}
+
+/* Sections du footer */
+footer p {
+    margin: 5px 0;
+}
+
+
+/* Liens généraux */
+footer a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+footer a:hover {
+    color: #e74c3c;
+}
+
+/* Style spécifique pour le compteur */
+footer p:last-child {
+    font-weight: bold;
+    color: #16a085;
+    font-size: 1rem;
+}
+
+/* Éléments en gras (Climatech, auteurs) */
+footer strong {
+    font-weight: 700;
+}
+
+/* Bouton Retour en haut - Mode Clair */
+body.light-mode .back-to-top {
+    position: fixed;
+    bottom: 90px;
+    right: 30px;
+    width: 50px;
+    height: 50px;
+    background: #2980b9;
+    color: #fff;
+    text-align: center;
+    line-height: 50px;
+    border-radius: 50%;
+    text-decoration: none;
+    font-size: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s, transform 0.2s;
+    z-index: 100;
+}
+
+body.light-mode .back-to-top:hover {
+    background: #3498db;
+    transform: scale(1.1);
+}
+
+/* Formulaire de sélection */
+form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin: 20px 0;
+}
+
+form label {
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+form select {
+    padding: 8px 12px;
+    font-size: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background: #fff;
+    color: #333;
+    width: 250px;
+    max-width: 100%;
+    transition: border-color 0.3s;
+}
+
+form select:hover,
+form select:focus {
+    border-color: #2980b9;
+    outline: none;
+}
+
+/* Prévisions météo */
+main ul {
+    list-style: none;
+    padding: 0;
+    max-width: 700px;
+    margin: 20px auto;
+}
+
+main ul li {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.05);
+    color: #555;
+}
+
+main ul li strong {
+    color: #2c3e50;
+}
+.plan {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 20px;
+    text-align: center;
+}
+
+.plan ul {
+    list-style: none;
+    padding: 0;
+}
+
+.plan li {
+    margin: 15px 0;
+}
+
+.plan a {
+    color: #3498db;
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.plan a:hover {
+    color: #e74c3c;
+}
+
+.video-apod {
+    position: relative;
+    padding-bottom: 56.25%; /* ratio 16:9 */
+    height: 0;
+    overflow: hidden;
+    border-radius: var(--radius);
+    box-shadow: 0 4px 12px var(--shadow-dark);
+    margin: 30px auto;
+    max-width: 800px;
+}
+
+.video-apod iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .header-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .header-right {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    nav a {
+        margin: 5px 0;
+    }
+
+    .welcome-banner {
+        padding: 20px;
+    }
+
+    .welcome-banner h1 {
+        font-size: 2rem;
+    }
+
+    main {
+        margin: 15px;
+        padding: 20px;
+    }
+
+    .page-links li {
+        padding: 10px 15px;
+    }
+
+    body.light-mode .back-to-top {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 1.2rem;
+    }
+
+    form {
+        padding: 0 15px;
+    }
+
+    form select {
+        width: 100%;
+    }
+    footer {
+        flex-direction: column;
+        padding: 20px;
+        text-align: center;
+    }
+    footer .back-to-top {
+        position: static;
+        transform: none;
+        margin-top: 10px;
+    }
+}

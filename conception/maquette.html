@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>ClimaTech - Maquette complète</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f0f8ff;
+      color: #333;
+    }
+
+    header {
+      background: linear-gradient(to right, #0066cc, #3399ff);
+      color: white;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    nav a {
+      color: white;
+      text-decoration: none;
+      margin-left: 20px;
+      font-weight: bold;
+      transition: color 0.3s ease;
+    }
+
+    nav a:hover {
+      color: #ffdd57;
+    }
+
+    main {
+      max-width: 960px;
+      margin: 40px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    section {
+      display: none;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    footer {
+      background-color: #f2f2f2;
+      color: #555;
+      text-align: center;
+      font-size: 0.9rem;
+      padding: 20px;
+      margin-top: 40px;
+      border-top: 1px solid #ddd;
+    }
+
+    footer a {
+      color: #0077cc;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Logo - ClimaTech</h1>
+    <nav>
+      <a href="#" onclick="showPage('accueil')">Accueil</a>
+      <a href="#" onclick="showPage('meteo')">Prévisions</a>
+      <a href="#" onclick="showPage('stats')">Statistiques</a>
+      <a href="#" onclick="showPage('tech')">Tech</a>
+      <a href="#" onclick="showPage('evolutions')">Évolutions</a>
+    </nav>
+  </header>
+
+  <main>
+    <section id="accueil" class="active">
+      <h2>Bienvenue sur ClimaTech 🌤️</h2>
+      <p>Votre site météo intelligent : carte interactive, prévisions locales, statistiques et données techniques accessibles.</p>
+      <ul>
+        <li>🔍 Rechercher la météo par ville</li>
+        <li>🗺️ Sélectionner une région sur la carte</li>
+        <li>📊 Visualiser les statistiques d’utilisation</li>
+        <li>⚙️ Accéder aux données techniques (API, formats)</li>
+      </ul>
+    </section>
+
+    <section id="meteo">
+      <h2>Prévisions météo</h2>
+      <p>Carte interactive de France 🗺️ + menus déroulants région ➝ département ➝ ville</p>
+      <p>Affichage des données météo : température, condition, prévisions à 7 jours.</p>
+    </section>
+
+    <section id="stats">
+      <h2>Statistiques 📈</h2>
+      <ul>
+        <li>Histogramme (consultations par région)</li>
+        <li>Camembert (répartition des requêtes)</li>
+        <li>Courbe (évolution du trafic)</li>
+        <li>Top 5 des villes les plus consultées</li>
+        <li>Bouton “Tendances météo”</li>
+      </ul>
+    </section>
+
+    <section id="tech">
+      <h2>Informations techniques ⚙️</h2>
+      <p>Détails des APIs utilisées :</p>
+      <ul>
+        <li>OpenWeatherMap : météo en JSON</li>
+        <li>NASA APOD : image ou vidéo du jour</li>
+        <li>Géolocalisation : GeoPlugin, ipinfo, whatismyip</li>
+        <li>Stockage local : CSV, cache JSON/XML</li>
+      </ul>
+    </section>
+
+    <section id="evolutions">
+      <h2>Évolutions prévues 🚀</h2>
+      <ul>
+        <li>📍 Recherche automatique via géolocalisation (IP/GPS)</li>
+        <li>🕘 Historique des dernières villes consultées (cookie/serveur)</li>
+        <li>⚠️ Affichage des alertes météo (vent, orages, canicule)</li>
+        <li>🧾 Export PDF de la météo hebdomadaire</li>
+        <li>🌅 Fond d’écran dynamique selon la météo actuelle</li>
+        <li>📱 Version mobile optimisée avec menu “burger” responsive</li>
+        <li>📴 Mode hors-ligne (PWA - Progressive Web App)</li>
+        <li>📊 Statistiques détaillées (par ville, date, navigateur)</li>
+        <li>📈 Graphiques météo (jours les plus chauds, pluvieux...)</li>
+        <li>🏆 Classement des villes les plus consultées</li>
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 ClimaTech — CY Cergy University</p>
+    <p>Réalisé par Yanis SAMAH & Adel MAHI</p>
+    <p>Contact : <a href="mailto:email@example.com">email@example.com</a></p>
+  </footer>
+
+  <script>
+    function showPage(id) {
+      document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+  </script>
+
+</body>
+</html>
