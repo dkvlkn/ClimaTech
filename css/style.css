@@ -515,6 +515,16 @@ section p:hover {
 }
 
 /* Meteo.php */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
 .meteo-page {
     background: url("../img/photos/degleex-ganzorig-wQImoykAwGs-unsplash-min-min.jpg") no-repeat center center fixed, linear-gradient(135deg, #e9ecef 0%, #74b9ff 100%);
     background-size: cover;
@@ -805,7 +815,7 @@ section p:hover {
     margin-left: 10px;
 }
 
-/* Tech.php */
+/* Tech.php - Thème clair */
 .tech-page {
     max-width: 1200px;
     margin: 40px auto;
@@ -900,11 +910,7 @@ section p:hover {
     border-radius: 10px;
 }
 
-.tech-page p strong {
-    color: #0984e3;
-}
-
-.tech-page p {
+.tech-page .apod-description {
     font-size: 1.1rem;
     line-height: 1.6;
     margin: 0 0 40px;
@@ -914,6 +920,12 @@ section p:hover {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
     position: relative;
     z-index: 1;
+    text-align: left; /* Centrer le texte */
+    max-width: 100%; /* Limiter la largeur pour un meilleur centrage */
+}
+
+.tech-page .apod-description strong {
+    color: #0984e3; /* Couleur cohérente pour le thème clair */
 }
 
 .tech-page ul {
@@ -956,7 +968,7 @@ section p:hover {
     font-weight: 700;
 }
 
-.tech-page p.error {
+.tech-page .error-message { /* Corrigé : remplacé p.error par .error-message */
     background: rgba(231, 76, 60, 0.1);
     color: #e74c3c;
     padding: 20px;

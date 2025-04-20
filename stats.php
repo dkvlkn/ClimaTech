@@ -13,8 +13,8 @@ $isNightMode = isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'dark';
 $cssFile = $isNightMode ? 'styles/stats-night.css' : 'styles/stats-day.css';
 ?>
 
-<link rel="stylesheet" href="<?= htmlspecialchars($cssFile) ?>">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="<?= htmlspecialchars($cssFile) ?>"/>
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <main class="stats-container">
@@ -37,7 +37,7 @@ $cssFile = $isNightMode ? 'styles/stats-night.css' : 'styles/stats-day.css';
                         $i++;
                     ?>
                         <li class="stats-item" data-city="<?= htmlspecialchars($city) ?>" data-count="<?= $count ?>" style="--bullet-color: <?= $bulletColor ?>;">
-                        <?= htmlspecialchars($city) ?> : <span class="count"><?= $count ?></span>&nbsp;consultations
+                        <?= htmlspecialchars($city) ?> : <span class="count"><?= $count ?></span> consultations
                         </li>
                     <?php endforeach; ?>
                 </ul>

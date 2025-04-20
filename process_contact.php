@@ -21,7 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Exemple : envoyer un email (configure ton serveur SMTP)
-    $to = 'climathech@gmail.com'; 
+    $to = 'malikhk2006@gmail.com'; 
     $headers = "From: $email\r\n";
     $body = "Nom: $name\nEmail: $email\nSujet: $subject\n\nMessage:\n$message";
     

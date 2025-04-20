@@ -1,15 +1,24 @@
 <?php
-// Fonction pour obtenir une image d'arrière-plan aléatoire
+
+/**
+ * Récupère une image d'arrière-plan aléatoire dans un dossier spécifié.
+ *
+ * @param string $directory Chemin du dossier contenant les images (par défaut : 'img/photos/').
+ * @param string $default   Chemin de l'image par défaut si aucune image n'est trouvée (par défaut : 'img/arriere_plan_header_clair.jpg').
+ * @return string           Chemin de l'image sélectionnée ou de l'image par défaut.
+ */
 function getBackgroundImage($directory = 'img/photos/', $default = 'img/arriere_plan_header_clair.jpg')
 {
     $image = getRandomImage($directory); // Utilise ta fonction avec chemin relatif
     return $image ?? $default;
 }
+
 /**
  * Récupère une ou plusieurs images aléatoires dans un dossier donné.
- * @param string $dir Chemin du dossier contenant les images.
- * @param int $count Nombre d'images à sélectionner (par défaut 1).
- * @return string|array|null Chemin d'une image (si $count=1) ou tableau de chemins (si $count>1), ou null si aucune image.
+ *
+ * @param string $dir   Chemin du dossier contenant les images (par défaut : '../img/photos/').
+ * @param int    $count Nombre d'images à sélectionner (par défaut : 1).
+ * @return string|array|null Chemin d'une image (si $count=1), tableau de chemins (si $count>1), ou null/tableau vide si aucune image.
  */
 function getRandomImage($dir = "../img/photos/", $count = 1)
 {
@@ -61,10 +70,11 @@ function getRandomImage($dir = "../img/photos/", $count = 1)
 }
 
 /**
- * Récupère le nom de la ville à partir des coordonnées via OpenWeatherMap
- * @param float $lat Latitude
- * @param float $lon Longitude
- * @return string|null Nom de la ville ou null si échec
+ * Récupère le nom de la ville à partir des coordonnées via l'API OpenWeatherMap.
+ *
+ * @param float $lat Latitude.
+ * @param float $lon Longitude.
+ * @return string|null Nom de la ville ou null si la requête échoue.
  */
 function getCityFromCoordinates($lat, $lon)
 {
@@ -85,10 +95,11 @@ function getCityFromCoordinates($lat, $lon)
 }
 
 /**
- * Récupère des images aléatoires d'une ville via l'API Pixabay
- * @param string $city Nom de la ville
- * @param int $count Nombre d'images à récupérer (max 3)
- * @return array|null Tableau d'URLs d'images ou null si échec
+ * Récupère des images aléatoires d'une ville via l'API Pixabay.
+ *
+ * @param string $city  Nom de la ville.
+ * @param int    $count Nombre d'images à récupérer (maximum 3, par défaut : 10).
+ * @return array|null Tableau d'URLs d'images ou null si la requête échoue.
  */
 function getPixabayCityImages($city, $count = 10)
 {
@@ -118,6 +129,12 @@ function getPixabayCityImages($city, $count = 10)
     return !empty($images) ? $images : null;
 }
 
+/**
+ * Récupère les données de l'image ou vidéo du jour (APOD) de la NASA avec mise en cache.
+ *
+ * @param string $api_key Clé API NASA (par défaut : 'dqUiZ2IwqKnOYADVpNhzzfiM9WY4XjdJshceSy62').
+ * @return array|null Données APOD (url, media_type, explanation, etc.) ou null si la requête échoue.
+ */
 function getApodData($api_key = "dqUiZ2IwqKnOYADVpNhzzfiM9WY4XjdJshceSy62")
 {
     $date = date("Y-m-d");
@@ -150,6 +167,12 @@ function getApodData($api_key = "dqUiZ2IwqKnOYADVpNhzzfiM9WY4XjdJshceSy62")
     return null;
 }
 
+/**
+ * Supprime les fichiers de cache plus anciens qu'un certain nombre de jours.
+ *
+ * @param int $days Nombre de jours avant suppression (par défaut : 3).
+ * @return void
+ */
 function cleanCache($days = 3)
 {
     $cacheDir = __DIR__ . '/../cache/';
@@ -171,7 +194,14 @@ function cleanCache($days = 3)
     }
 }
 
-function getGeoData($ip = null, $cacheTTL = 24 * 60 * 60) // Ajout d'un TTL par défaut de 24h
+/**
+ * Récupère les données de géolocalisation pour une adresse IP via GeoPlugin (XML).
+ *
+ * @param string|null $ip       Adresse IP (par défaut : $_SERVER['REMOTE_ADDR']).
+ * @param int         $cacheTTL Durée de vie du cache en secondes (par défaut : 24 heures).
+ * @return array|null Données de géolocalisation (ip, ville, region, pays, lat, lon) ou null si échec.
+ */
+function getGeoData($ip = null, $cacheTTL = 24 * 60 * 60)
 {
     if ($ip === null) {
         $ip = $_SERVER['REMOTE_ADDR'];
@@ -208,8 +238,9 @@ function getGeoData($ip = null, $cacheTTL = 24 * 60 * 60) // Ajout d'un TTL par 
 }
 
 /**
- * Récupère la liste des régions depuis region.csv
- * @return array Liste des noms de régions
+ * Récupère la liste des régions depuis un fichier CSV.
+ *
+ * @return array Liste triée et unique des noms de régions.
  */
 function getRegions()
 {
@@ -231,9 +262,10 @@ function getRegions()
 }
 
 /**
- * Récupère les départements d'une région donnée depuis departement.csv
- * @param string $regionNom Nom de la région
- * @return array Liste des noms de départements
+ * Récupère les départements d'une région donnée depuis un fichier CSV.
+ *
+ * @param string $regionNom Nom de la région.
+ * @return array Liste triée et unique des noms de départements.
  */
 function getDepartements($regionNom)
 {
@@ -271,9 +303,10 @@ function getDepartements($regionNom)
 }
 
 /**
- * Récupère les villes d'un département donné depuis cities.csv en utilisant son nom
- * @param string $departementNom Nom du département (ex. "Ain")
- * @return array Liste triée et unique des noms de villes
+ * Récupère les villes d'un département donné depuis un fichier CSV.
+ *
+ * @param string $departementNom Nom du département.
+ * @return array Liste triée et unique des noms de villes.
  */
 function getVilles($departementNom)
 {
@@ -323,10 +356,12 @@ function getVilles($departementNom)
 
     return $villes;
 }
+
 /**
- * Retourne le chemin d'une icône locale en fonction du code OpenWeatherMap
- * @param string $iconCode Code de l'icône (ex. "01d", "10n")
- * @return string Chemin ou URL de l'icône
+ * Retourne le chemin d'une icône locale en fonction du code d'icône OpenWeatherMap.
+ *
+ * @param string $iconCode Code de l'icône (ex. '01d', '10n').
+ * @return string Chemin de l'icône locale ou chemin par défaut ('img/weather/default.png').
  */
 function getWeatherIcon2($iconCode)
 {
@@ -354,8 +389,9 @@ function getWeatherIcon2($iconCode)
 }
 
 /**
- * Récupère des actualités sur l'environnement et la météo via NewsAPI
- * @return array Tableau contenant les articles ou un message d'erreur
+ * Récupère des actualités sur l'environnement et la météo via NewsAPI.
+ *
+ * @return array Tableau contenant les articles (title, description, url, source, publishedAt, image) ou un message d'erreur.
  */
 function getEnvironmentalNews()
 {
@@ -422,10 +458,11 @@ function getEnvironmentalNews()
 }
 
 /**
- * Récupère les données météo pour une ville via OpenWeatherMap
- * @param string $ville Nom de la ville
- * @param string $apiKey Clé API OpenWeatherMap
- * @return array|null Données météo ou null si échec
+ * Récupère les données météo actuelles et prévisionnelles pour une ville via OpenWeatherMap.
+ *
+ * @param string $ville  Nom de la ville.
+ * @param string $apiKey Clé API OpenWeatherMap (par défaut : '07cdca46f2c356ffb34c6b0f3e240cb5').
+ * @return array|null Données météo (temperature, feels_like, description, etc.) ou null si échec.
  */
 function getMeteo($ville, $apiKey = "07cdca46f2c356ffb34c6b0f3e240cb5")
 {
@@ -513,6 +550,12 @@ function getMeteo($ville, $apiKey = "07cdca46f2c356ffb34c6b0f3e240cb5")
     return $meteo;
 }
 
+/**
+ * Récupère les coordonnées géographiques d'une ville via OpenWeatherMap.
+ *
+ * @param string $city Nom de la ville.
+ * @return array|null Coordonnées (lat, lon) ou null si échec.
+ */
 function getGeoDataByCity($city)
 {
     $apiKey = '07cdca46f2c356ffb34c6b0f3e240cb5';
@@ -530,12 +573,12 @@ function getGeoDataByCity($city)
 }
 
 /**
- * Récupère une alerte météo ou la météo actuelle pour la position de l'internaute avec OpenWeatherMap.
- * Inclut humidité, ressenti, lever/coucher du soleil et icônes améliorées.
- * @param float $latitude Latitude de la position
- * @param float $longitude Longitude de la position
- * @param string $apiKey Clé API OpenWeatherMap (par défaut fournie)
- * @return array Données météo ou erreur
+ * Récupère la météo actuelle ou une alerte météo pour une position via OpenWeatherMap.
+ *
+ * @param float  $latitude  Latitude.
+ * @param float  $longitude Longitude.
+ * @param string $apiKey    Clé API OpenWeatherMap (par défaut : '07cdca46f2c356ffb34c6b0f3e240cb5').
+ * @return array Données météo ou alerte (type, message, details, icon, condition, temp, wind, humidity, feels_like, sunrise, sunset).
  */
 function getWeatherAlerte($latitude, $longitude, $apiKey = '07cdca46f2c356ffb34c6b0f3e240cb5')
 {
@@ -621,6 +664,12 @@ function getWeatherAlerte($latitude, $longitude, $apiKey = '07cdca46f2c356ffb34c
     ];
 }
 
+/**
+ * Retourne le chemin d'une icône locale en fonction de la condition météo.
+ *
+ * @param string $condition Description de la condition météo (ex. 'ciel dégagé', 'pluie').
+ * @return string Chemin de l'icône locale (ex. 'img/icons/sun.svg').
+ */
 function getWeatherIcon($condition)
 {
     // Normaliser la condition : minuscules, suppression des espaces superflus
@@ -676,6 +725,13 @@ function getWeatherIcon($condition)
     return $iconMap[$condition] ?? 'img/icons/sun.svg';
 }
 
+/**
+ * Récupère les données de géolocalisation pour une adresse IP via ipinfo.io (JSON).
+ *
+ * @param string|null $ip    Adresse IP (par défaut : $_SERVER['REMOTE_ADDR']).
+ * @param string      $token Jeton API ipinfo.io (par défaut : 'b95e1aafd66f5a').
+ * @return array|null Données de géolocalisation (ip, ville, region, pays, loc) ou null si échec.
+ */
 function getGeoIpInfoJSON($ip = null, $token = "b95e1aafd66f5a")
 {
     if ($ip === null) {
@@ -736,6 +792,13 @@ function getGeoIpInfoJSON($ip = null, $token = "b95e1aafd66f5a")
     return $result;
 }
 
+/**
+ * Récupère les données de géolocalisation pour une adresse IP via whatismyip.com (XML).
+ *
+ * @param string $apiKey        Clé API whatismyip.com (par défaut : '06b36d3aaed7fec84de2d0de4804b09b').
+ * @param int    $cacheDuration Durée de vie du cache en secondes (par défaut : 6 heures).
+ * @return array|null Données de géolocalisation (ip, ville, region, pays, latitude, longitude) ou null si échec.
+ */
 function getGeoIpInfoXML($apiKey = "06b36d3aaed7fec84de2d0de4804b09b", $cacheDuration = 6 * 3600)
 {
     $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
@@ -781,7 +844,11 @@ function getGeoIpInfoXML($apiKey = "06b36d3aaed7fec84de2d0de4804b09b", $cacheDur
     ];
 }
 
-/*les hits*/
+/**
+ * Incrémente et retourne le nombre de visites enregistré dans un fichier.
+ *
+ * @return int Nombre total de visites.
+ */
 function getAndIncrementHits()
 {
     $hitsFile = __DIR__ . '/../data/hits.txt';
@@ -799,7 +866,12 @@ function getAndIncrementHits()
     return $hits;
 }
 
-// Enregistrer une ville consultée dans un fichier CSV
+/**
+ * Enregistre une recherche de ville dans un fichier CSV.
+ *
+ * @param string $city Nom de la ville.
+ * @return void
+ */
 function logCitySearch($city)
 {
     $csvFile = __DIR__ . '/data/cities.csv';
@@ -819,7 +891,11 @@ function logCitySearch($city)
     }
 }
 
-// Lire les villes consultées depuis le CSV et compter les occurrences
+/**
+ * Lit les villes consultées depuis un fichier CSV et compte les occurrences.
+ *
+ * @return array Tableau associatif avec les villes comme clés et le nombre de recherches comme valeurs, trié par ordre décroissant.
+ */
 function getCityStats()
 {
     $csvFile = __DIR__ . '/data/cities.csv';
@@ -838,38 +914,61 @@ function getCityStats()
     return $stats;
 }
 
+/**
+ * Définit un cookie uniquement si le consentement est donné.
+ *
+ * @param string $name   Nom du cookie.
+ * @param string $value  Valeur du cookie.
+ * @param int    $expire Timestamp d'expiration.
+ * @param string $path   Chemin du cookie.
+ * @return void
+ */
 function setConditionalCookie($name, $value, $expire, $path)
 {
     if (!isset($_COOKIE['cookie_consent']) || $_COOKIE['cookie_consent'] === 'accepted') {
         setcookie($name, $value, $expire, $path);
     }
 }
-// Fonction pour vérifier si la bannière de consentement doit être affichée
+
+/**
+ * Vérifie si la bannière de consentement aux cookies doit être affichée.
+ *
+ * @return bool True si le cookie 'cookie_consent' n'est pas défini, false sinon.
+ */
 function shouldShowCookieConsent()
 {
     return !isset($_COOKIE['cookie_consent']);
 }
 
-// Fonction pour supprimer les cookies non essentiels
+/**
+ * Supprime les cookies non essentiels.
+ *
+ * @return void
+ */
 function removeNonEssentialCookies()
 {
     setcookie('last_city', '', time() - 3600, '/');
     setcookie('theme', '', time() - 3600, '/');
 }
-// Obtenir le thème courant
+
+/**
+ * Récupère le thème courant en fonction des paramètres GET, des cookies, ou de l'heure.
+ *
+ * @return string 'standard' ou 'night'.
+ */
 function getCurrentTheme(): string
 {
     $defaultTheme = 'standard';
     if (isset($_GET['style']) && in_array($_GET['style'], ['standard', 'night'])) {
         $theme = $_GET['style'];
-        setcookie('theme', $theme, time() + (30 * 24 * 60 * 60),'/');
+        setcookie('theme', $theme, time() + (30 * 24 * 60 * 60), '/');
         return $theme;
     }
     if (isset($_COOKIE['theme'])) {
         if (in_array($_COOKIE['theme'], ['standard', 'night'])) {
             return $_COOKIE['theme'];
         } else {
-            setcookie('theme', '', time() - 3600,'/');
+            setcookie('theme', '', time() - 3600, '/');
         }
     }
     date_default_timezone_set('Europe/Paris');

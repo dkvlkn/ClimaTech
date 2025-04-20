@@ -516,6 +516,16 @@ section p:hover {
 }
 
 /* Styles spécifiques à meteo.php */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    border: 0;
+}
 .meteo-page {
     background: url("../img/photos/degleex-ganzorig-wQImoykAwGs-unsplash-min-min.jpg") no-repeat center center fixed, linear-gradient(135deg, #e9ecef 0%, #74b9ff 100%);
     background-size: cover;
@@ -1022,7 +1032,7 @@ footer a#manage-cookies:hover {
     font-style: italic;
 }
 
-.tech-page p {
+.tech-page .apod-description {
     font-size: 1.1em;
     line-height: 1.6;
     margin: 0 0 40px;
@@ -1032,9 +1042,12 @@ footer a#manage-cookies:hover {
     box-shadow: var(--shadow-soft);
     position: relative;
     z-index: 1;
+    text-align:left; /* Centrer le texte */
+    max-width: 100%; /* Limiter la largeur pour un meilleur centrage */
+    color: #e0e0e0; /* Texte clair pour le thème nuit */
 }
 
-.tech-page p strong {
+.tech-page .apod-description strong {
     color: var(--primary-green);
 }
 
@@ -1077,10 +1090,17 @@ footer a#manage-cookies:hover {
     color: var(--primary-green);
 }
 
-.tech-page p.error {
+.tech-page .error-message { /* Corrigé : remplacé p.error par .error-message */
     background: rgba(231, 76, 60, 0.3);
     color: var(--error-red);
+    padding: 20px;
+    border-radius: 10px;
     text-align: center;
+    font-size: 1.1em;
+    margin: 0 0 40px;
+    box-shadow: var(--shadow-soft);
+    position: relative;
+    z-index: 1;
 }
 
 /* Plan Page */
