@@ -16,19 +16,21 @@ include "include/header.inc.php";
             <li><a href="contact.php">Contact</a> - Formulaire de contact.</li>
             <li><a href="plan.php">Plan du site</a> - Vous êtes ici !</li>
         </ul>
+
+        <!-- Bannière de consentement aux cookies -->
+        <div id="cookie-consent" class="cookie-consent<?php echo function_exists('shouldShowCookieConsent') && shouldShowCookieConsent() ? '' : ' hidden'; ?>" role="dialog" aria-label="Consentement aux cookies">
+            <p>Nous utilisons des cookies pour améliorer votre expérience et analyser notre trafic. Acceptez-vous leur utilisation ?</p>
+            <div class="cookie-buttons">
+                <button id="accept-cookies">Accepter</button>
+                <button id="decline-cookies">Refuser</button>
+            </div>
+        </div>
     </section>
 </main>
 
-<div id="cookie-consent" class="cookie-consent" style="display: <?= shouldShowCookieConsent() ? 'block' : 'none' ?>;">
-    <p>Nous utilisons des cookies pour améliorer votre expérience et analyser notre trafic. Acceptez-vous leur utilisation ?</p>
-    <div class="cookie-buttons">
-        <button id="accept-cookies">Accepter</button>
-        <button id="decline-cookies">Refuser</button>
-    </div>
-</div>
-
-<script src="js/cookies.js"></script>
-
+<script src="js/cookie-consent.js"></script>
 <?php
 require_once "include/footer.inc.php";
 ?>
+
+

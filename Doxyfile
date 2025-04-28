@@ -1,0 +1,42 @@
+# Nom du projet
+PROJECT_NAME           = "Climatech"
+PROJECT_BRIEF          = "Application web pour les prévisions météo et statistiques climatiques"
+PROJECT_NUMBER         = "1.0"
+
+# Répertoire de sortie pour la documentation
+OUTPUT_DIRECTORY       = docs/
+
+# Langue de la documentation
+OUTPUT_LANGUAGE        = French
+
+# Inclure les fichiers PHP et JavaScript
+EXTENSION_MAPPING      = php=PHP js=JavaScript
+FILE_PATTERNS          = *.php *.js *.css
+
+# Répertoires à analyser
+INPUT                  = . include/ js/ css/ styles/
+
+# Inclure le code source dans la documentation
+SOURCE_BROWSER         = YES
+
+# Générer des diagrammes (nécessite Graphviz)
+HAVE_DOT               = YES
+CALL_GRAPH             = YES
+CALLER_GRAPH           = YES
+
+# Générer la documentation en HTML
+GENERATE_HTML          = YES
+HTML_OUTPUT            = html
+
+# (Optionnel) Générer un PDF via LaTeX
+GENERATE_LATEX         = YES
+LATEX_OUTPUT           = latex
+
+# Exclure certains répertoires/fichiers
+EXCLUDE                = vendor/ node_modules/
+
+# Activer la récursivité pour inclure les sous-répertoires
+RECURSIVE              = YES
+
+# Optimiser pour PHP
+OPTIMIZE_OUTPUT_FOR_C  = NO

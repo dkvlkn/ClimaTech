@@ -1,13 +1,36 @@
 <?php
+/**
+ * Script pour afficher les données météo d'une ville.
+ *
+ * Ce fichier récupère la météo actuelle, celle de demain,
+ * ainsi que les prévisions sur 9 jours pour une ville donnée via GET.
+ *
+ * PHP version 8+
+ *
+ * @category Météo
+ * @package  Climatech\Meteo
+ * @author   VotreNom
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://climatech.example.com/meteo_display.php
+ */
+
+// Inclusion des fonctions nécessaires
 require_once "include/functions.inc.php";
 
+// Récupération de la ville depuis les paramètres GET
 $ville = $_GET['ville'] ?? '';
+
 if ($ville) {
+    // Enregistre la recherche de ville
     logCitySearch($ville);
+
+    // Récupère les données météo de la ville
     $meteo = getMeteo($ville);
-    if ($meteo) {
+
+    if ($meteo):
         ?>
         <h2 class="weather-title">🌤️ Météo à <?= htmlspecialchars($ville) ?></h2>
+
         <div class="weather-cards-container">
             <!-- Météo actuelle -->
             <div class="weather-card weather-card-current">
@@ -24,7 +47,8 @@ if ($ville) {
                     <p class="weather-detail">Pression : <?= $meteo['pressure'] ?> hPa</p>
                 </div>
             </div>
-            <!-- Météo demain -->
+
+            <!-- Météo de demain -->
             <div class="weather-card weather-card-tomorrow">
                 <div class="weather-icon">
                     <img src="<?= $meteo['demain']['icon'] ?>" alt="<?= htmlspecialchars($meteo['demain']['description']) ?>">
@@ -40,11 +64,13 @@ if ($ville) {
                 </div>
             </div>
         </div>
-        <!-- Prévisions sur 9 jours (J+2 à J+10) -->
+
+        <!-- Prévisions J+2 à J+10 -->
         <h3 class="weather-forecast-title">Prévisions pour la semaine</h3>
         <div class="weather-forecast-container">
-            <?php 
-            $previsions = array_slice($meteo['semaine'], 2, 9); // J+2 à J+10
+            <?php
+            // Extraction des prévisions du jour 2 à 10
+            $previsions = array_slice($meteo['semaine'], 2, 9);
             foreach ($previsions as $index => $jour):
                 $date = $jour['date'];
                 $condition = $jour['description'];
@@ -72,9 +98,9 @@ if ($ville) {
             <?php endforeach; ?>
         </div>
         <?php
-    } else {
+    else:
         echo '<p class="weather-error">Impossible de récupérer la météo pour ' . htmlspecialchars($ville) . '.</p>';
-    }
+    endif;
 } else {
     echo '<p class="weather-error">Veuillez sélectionner une ville.</p>';
 }

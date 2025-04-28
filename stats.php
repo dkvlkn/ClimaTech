@@ -1,25 +1,70 @@
 <?php
-require_once "include/functions.inc.php";
-include "include/header.inc.php";
+/**
+ * Page des statistiques de consultation des villes.
+ *
+ * Cette page affiche les 7 villes les plus consultées sur le site Climatech
+ * sous forme de graphique, de liste et de tableau détaillé.
+ * Elle prend en compte le thème jour/nuit et inclut une bannière de consentement aux cookies.
+ *
+ * PHP version 8+
+ *
+ * @category WebApp
+ * @package  Climatech\Stats
+ * @author   VotreNom
+ * @license  MIT https://opensource.org/licenses/MIT
+ * @link     https://climatech.example.com/stats.php
+ */
 
-// Récupérer les stats et filtrer : min 7 recherches, max 7 villes
+// Sécurité : empêcher l'accès direct
+if (!defined('PHP_EOL')) {
+    die('Accès direct interdit');
+}
+
+// Activer le buffering de sortie
+ob_start();
+
+// Inclure les fonctions utilitaires
+if (!file_exists('include/functions.inc.php')) {
+    die('Erreur : Fichier functions.inc.php manquant.');
+}
+require_once 'include/functions.inc.php';
+
+// Définir le titre de la page
+$pageTitle = 'Statistiques de Consultation | Climatech';
+
+/**
+ * Récupération et filtrage des statistiques.
+ *
+ * @var array<string, int> $cityStats      Toutes les statistiques brutes
+ * @var array<string, int> $filteredStats  Statistiques filtrées (>=7 consultations, max 7)
+ */
 $cityStats = getCityStats();
 $filteredStats = array_filter($cityStats, fn($count) => $count >= 7);
-arsort($filteredStats); // Trier par recherches décroissantes
-$filteredStats = array_slice($filteredStats, 0, 7, true); // Limiter à 7 villes
+arsort($filteredStats);
+$filteredStats = array_slice($filteredStats, 0, 7, true);
 
-// Détection du mode nuit
-$isNightMode = isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'dark';
-$cssFile = $isNightMode ? 'styles/stats-night.css' : 'styles/stats-day.css';
+// Détection du mode nuit via getCurrentTheme()
+$currentTheme = getCurrentTheme();
+$isNightMode = $currentTheme === 'night';
+
+// Vérifier l'existence du fichier d'en-tête
+if (!file_exists('include/header.inc.php')) {
+    die('Erreur : Fichier header.inc.php manquant.');
+}
+include 'include/header.inc.php';
+
+// Définir le Content-Type
+header('Content-Type: text/html; charset=UTF-8');
 ?>
 
-<link rel="stylesheet" href="<?= htmlspecialchars($cssFile) ?>">
-<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Liens CSS externes et scripts -->
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&amp;display=swap" />
+<script defer="defer" src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script defer="defer" src="https://cdnjs.cloudflare.com/ajax/libs/Sortable/1.15.0/Sortable.min.js"></script>
 
-<main class="stats-container">
-    <section class="stats-block">
-        <h2>Statistiques des 7 villes les plus consultées</h2>
+<main class="container">
+    <section class="stats-block" aria-labelledby="stats-title">
+        <h2 id="stats-title">Statistiques des 7 villes les plus consultées</h2>
         <?php if (empty($filteredStats)): ?>
             <p class="no-data">Aucune ville n'a été consultée 7 fois ou plus.</p>
         <?php else: ?>
@@ -36,21 +81,53 @@ $cssFile = $isNightMode ? 'styles/stats-night.css' : 'styles/stats-day.css';
                         $bulletColor = $colors[$i % count($colors)];
                         $i++;
                     ?>
-                        <li class="stats-item" data-city="<?= htmlspecialchars($city) ?>" data-count="<?= $count ?>" style="--bullet-color: <?= $bulletColor ?>;">
-                        <?= htmlspecialchars($city) ?> : <span class="count"><?= $count ?></span>&nbsp;consultations
+                        <li class="stats-item" data-city="<?php echo htmlspecialchars($city, ENT_QUOTES, 'UTF-8'); ?>" data-count="<?php echo htmlspecialchars($count, ENT_QUOTES, 'UTF-8'); ?>" style="--bullet-color: <?php echo htmlspecialchars($bulletColor, ENT_QUOTES, 'UTF-8'); ?>;">
+                            <?php echo htmlspecialchars($city, ENT_QUOTES, 'UTF-8'); ?> : <span class="count"><?php echo htmlspecialchars($count, ENT_QUOTES, 'UTF-8'); ?></span> consultations
                         </li>
                     <?php endforeach; ?>
                 </ul>
             </div>
+            <div class="stats-table-container">
+                <h3>Statistiques détaillées</h3>
+                <table id="stats-table" class="stats-table">
+                    <thead>
+                        <tr>
+                            <th>Ville</th>
+                            <th>Consultations</th>
+                            <th>Pourcentage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        $totalConsultations = array_sum($filteredStats);
+                        foreach ($filteredStats as $city => $count):
+                            $percentage = $totalConsultations > 0 ? round(($count / $totalConsultations) * 100, 1) : 0;
+                        ?>
+                            <tr>
+                                <td><?php echo htmlspecialchars($city, ENT_QUOTES, 'UTF-8'); ?></td>
+                                <td><?php echo htmlspecialchars($count, ENT_QUOTES, 'UTF-8'); ?></td>
+                                <td><?php echo htmlspecialchars($percentage, ENT_QUOTES, 'UTF-8'); ?>%</td>
+                            </tr>
+                        <?php endforeach; ?>
+                    </tbody>
+                </table>
+            </div>
             <script>
                 document.addEventListener("DOMContentLoaded", function() {
-                    // Débogage : afficher l'état du mode nuit
+                    // Initialiser le tableau triable
+                    new Sortable(document.getElementById('stats-table').getElementsByTagName('tbody')[0], {
+                        animation: 150,
+                        sort: true
+                    });
+
+                    // Debug thème/cookies
                     console.log('isNightMode (PHP):', <?php echo json_encode($isNightMode); ?>);
-                    console.log('Cookie theme:', '<?php echo isset($_COOKIE['theme']) ? $_COOKIE['theme'] : 'non défini'; ?>');
+                    console.log('Cookie theme:', '<?php echo isset($_COOKIE['theme']) ? htmlspecialchars($_COOKIE['theme'], ENT_QUOTES, 'UTF-8') : 'non défini'; ?>');
+                    console.log('Cookie consent:', '<?php echo isset($_COOKIE['cookie_consent']) ? htmlspecialchars($_COOKIE['cookie_consent'], ENT_QUOTES, 'UTF-8') : 'non défini'; ?>');
 
                     const ctx = document.getElementById('cityChart').getContext('2d');
                     const isNightMode = <?php echo json_encode($isNightMode); ?>;
-                    const cities = <?php echo json_encode(array_keys($filteredStats)); ?>;
+                    const cities = <?php echo json_encode(array_keys($filteredStats), JSON_HEX_QUOT | JSON_HEX_APOS); ?>;
                     const counts = <?php echo json_encode(array_values($filteredStats)); ?>;
 
                     const chart = new Chart(ctx, {
@@ -140,7 +217,28 @@ $cssFile = $isNightMode ? 'styles/stats-night.css' : 'styles/stats-day.css';
                 });
             </script>
         <?php endif; ?>
+
+        <!-- Bannière de consentement aux cookies -->
+        <div id="cookie-consent" class="cookie-consent<?php echo shouldShowCookieConsent() ? '' : ' hidden'; ?>" role="dialog" aria-label="Consentement aux cookies">
+            <p>Nous utilisons des cookies pour améliorer votre expérience et analyser notre trafic. Acceptez-vous leur utilisation ?</p>
+            <div class="cookie-buttons">
+                <button id="accept-cookies">Accepter</button>
+                <button id="decline-cookies">Refuser</button>
+            </div>
+        </div>
     </section>
 </main>
 
-<?php include "include/footer.inc.php"; ?>
+<!-- Script pour la gestion des cookies -->
+<script defer="defer" src="js/cookie-consent.js"></script>
+
+<?php
+// Inclure le pied de page
+if (!file_exists('include/footer.inc.php')) {
+    die('Erreur : Fichier footer.inc.php manquant.');
+}
+include 'include/footer.inc.php';
+
+// Vider le buffer de sortie
+ob_end_flush();
+?>
