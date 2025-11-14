@@ -68,7 +68,7 @@ function getRandomImage($dir = "../img/photos/", $count = 1)
  */
 function getCityFromCoordinates($lat, $lon)
 {
-    $apiKey = '07cdca46f2c356ffb34c6b0f3e240cb5'; // Votre clé API OpenWeatherMap
+    $apiKey = #####
     $url = "https://api.openweathermap.org/geo/1.0/reverse?lat=" . urlencode($lat) . "&lon=" . urlencode($lon) . "&limit=1&appid=" . urlencode($apiKey);
 
     $response = @file_get_contents($url);
@@ -92,8 +92,7 @@ function getCityFromCoordinates($lat, $lon)
  */
 function getPixabayCityImages($city, $count = 10)
 {
-    // Remplacez par votre clé API Pixabay
-    $apiKey = '49739011-28ed38da4f4c58d9c9fb403f4';
+    $apiKey = ####
     $url = "https://pixabay.com/api/?key=" . urlencode($apiKey) . "&q=" . urlencode($city) . "&image_type=photo&category=places&per_page=" . min($count, 3);
 
     // Effectuer la requête
@@ -118,7 +117,7 @@ function getPixabayCityImages($city, $count = 10)
     return !empty($images) ? $images : null;
 }
 
-function getApodData($api_key = "dqUiZ2IwqKnOYADVpNhzzfiM9WY4XjdJshceSy62")
+function getApodData($api_key = '####')
 {
     $date = date("Y-m-d");
     $cacheDir = __DIR__ . '/../cache/apod/';
@@ -359,7 +358,7 @@ function getWeatherIcon2($iconCode)
  */
 function getEnvironmentalNews()
 {
-    $apiKey = '849d0dc76d454e15b98772827d48556a'; // Remplace par ta clé API NewsAPI
+    $apiKey = '###';
     $cacheFile = 'cache/news/news_cache.json';
     $cacheDuration = 3600; // 1 heure
 
@@ -427,7 +426,7 @@ function getEnvironmentalNews()
  * @param string $apiKey Clé API OpenWeatherMap
  * @return array|null Données météo ou null si échec
  */
-function getMeteo($ville, $apiKey = "07cdca46f2c356ffb34c6b0f3e240cb5")
+function getMeteo($ville, $apiKey = "#####")
 {
     $ville = urlencode($ville);
 
@@ -515,7 +514,7 @@ function getMeteo($ville, $apiKey = "07cdca46f2c356ffb34c6b0f3e240cb5")
 
 function getGeoDataByCity($city)
 {
-    $apiKey = '07cdca46f2c356ffb34c6b0f3e240cb5';
+    $apiKey = '####';
     $url = "http://api.openweathermap.org/geo/1.0/direct?q=" . urlencode($city) . "&limit=1&appid=" . $apiKey;
     $response = file_get_contents($url);
     $data = json_decode($response, true);
@@ -537,7 +536,7 @@ function getGeoDataByCity($city)
  * @param string $apiKey Clé API OpenWeatherMap (par défaut fournie)
  * @return array Données météo ou erreur
  */
-function getWeatherAlerte($latitude, $longitude, $apiKey = '07cdca46f2c356ffb34c6b0f3e240cb5')
+function getWeatherAlerte($latitude, $longitude, $apiKey = '####')
 {
     $url = "https://api.openweathermap.org/data/2.5/weather?lat={$latitude}&lon={$longitude}&appid={$apiKey}&units=metric&lang=fr";
     $response = @file_get_contents($url);
@@ -736,7 +735,7 @@ function getGeoIpInfoJSON($ip = null, $token = "b95e1aafd66f5a")
     return $result;
 }
 
-function getGeoIpInfoXML($apiKey = "06b36d3aaed7fec84de2d0de4804b09b", $cacheDuration = 6 * 3600)
+function getGeoIpInfoXML($apiKey = "####", $cacheDuration = 6 * 3600)
 {
     $ip = $_SERVER['REMOTE_ADDR'] ?? '127.0.0.1';
     $hash = md5($ip);
@@ -877,3 +876,4 @@ function getCurrentTheme(): string
     $isDay = ($currentHour >= 6 && $currentHour < 18);
     return $isDay ? 'standard' : 'night';
 }
+
